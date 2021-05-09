@@ -5,37 +5,20 @@
  */
 package Interface;
 
-import Business.ConfigreBusiness;
-import Business.Customer.Customer;
-import Business.Admin;
-import Business.Retailer.Retailer;
-import Business.UserAccount;
-import Interface.Admin.MainAdminPanel;
-import Interface.Customer.MainCustomerPanel;
-import Interface.Retailer.MainRetailerPanel;
-import java.awt.CardLayout;
-import javax.swing.JOptionPane;
-
 /**
  *
- * @author mahajan
+ * @author X1
  */
 public class MainFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form MainFrame
+     * Creates new form MainFrame1
      */
-    private Admin masterClass;
-
     public MainFrame() {
         initComponents();
-        masterClass = ConfigreBusiness.intialize();
-        resetFields();
-    }
-
-    public void resetFields() {
-        usernameTF.setText("");
-        passwordTF.setText("");
+        setLocationRelativeTo(null); // the component in relation to which the window's location is determined
+      
+        setResizable(false); // không cho thay đổi size
     }
 
     /**
@@ -47,7 +30,6 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Cards = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         usernameLbl = new javax.swing.JLabel();
         usernameTF = new javax.swing.JTextField();
@@ -58,9 +40,6 @@ public class MainFrame extends javax.swing.JFrame {
         logoImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(0, 0, 0));
-
-        Cards.setLayout(new java.awt.CardLayout());
 
         usernameLbl.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         usernameLbl.setText("Username");
@@ -119,7 +98,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(logoImage, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(usernameLbl)
                     .addComponent(usernameTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -134,69 +113,37 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(64, 64, 64))
         );
 
-        Cards.add(jPanel1, "card2");
-
-        getContentPane().add(Cards, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 851, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void AddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddUserActionPerformed
-        SignUpCustomerPanel signUpCustomerPanel = new SignUpCustomerPanel(Cards, masterClass.getUserAccountDirectory());
-        Cards.add("SignUpCustomerPanel", signUpCustomerPanel);
-        CardLayout cl = (CardLayout) Cards.getLayout();
-        cl.next(Cards);
-    }//GEN-LAST:event_AddUserActionPerformed
-
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
-        UserAccount ua = masterClass.getUserAccountDirectory().getUserAccount(usernameTF.getText());
-        if (ua != null) {
-            if (ua.getPassword().equals(passwordTF.getText())) {
-                String role = ua.getRole();
-                switch (role) {
-                    case "admin": {
-                        MainAdminPanel mainAdminPanel = new MainAdminPanel(Cards, masterClass);
-                        Cards.add("MainAdminPanel", mainAdminPanel);
-                        CardLayout cl = (CardLayout) Cards.getLayout();
-                        cl.next(Cards);
-                        break;
-                    }
-
-                    case "retailer": {
-                        if (ua.getUserType() instanceof Retailer) {
-                            Retailer retailer = (Retailer) ua.getUserType();
-                            MainRetailerPanel mainRetailerPanel = new MainRetailerPanel(Cards, retailer);
-                            Cards.add("MainAdminPanel", mainRetailerPanel);
-                            CardLayout cl = (CardLayout) Cards.getLayout();
-                            cl.next(Cards);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Incorrect User");
-                        }
-                        break;
-                    }
-
-                    case "customer": {
-                        if (ua.getUserType() instanceof Customer) {
-                            Customer customer = (Customer) ua.getUserType();
-                            MainCustomerPanel mainCustomerPanel = new MainCustomerPanel(Cards, customer, masterClass);
-                            Cards.add("MainAdminPanel", mainCustomerPanel);
-                            CardLayout cl = (CardLayout) Cards.getLayout();
-                            cl.next(Cards);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Incorrect User");
-                        }
-                        break;
-
-                    }
-
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Incorrect Password");
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "User with username " + usernameTF.getText() + " not found!");
-        }
+        
     }//GEN-LAST:event_loginBtnActionPerformed
+
+    private void AddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddUserActionPerformed
+
+    }//GEN-LAST:event_AddUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -224,6 +171,7 @@ public class MainFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -235,7 +183,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddUser;
-    private javax.swing.JPanel Cards;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton loginBtn;
     private javax.swing.JLabel logoImage;
